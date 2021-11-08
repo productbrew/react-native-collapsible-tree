@@ -1,8 +1,4 @@
-export type DataStructure = {
-  id: number;
-  name: string;
-  children?: DataStructure[];
-};
+import { DataStructure } from 'react-native-pill';
 
 export const dataStructure: DataStructure[] = [
   {
@@ -10,7 +6,11 @@ export const dataStructure: DataStructure[] = [
     name: "Parent1",
     children: [
       { id: 11, name: "child1" },
-      { id: 12, name: "child2" },
+      { id: 12, name: "child2", children: [
+          { id: 102, name: "child1", children: [
+              { id: 1233, name: "child1" },
+            ] },
+        ] },
       { id: 13, name: "child3" },
       { id: 14, name: "child4" },
     ],
@@ -32,7 +32,28 @@ export const dataStructure: DataStructure[] = [
       { id: 31, name: "child1" },
       { id: 32, name: "child2" },
       { id: 33, name: "child3" },
-      { id: 34, name: "child4" },
+      {
+        id: 34,
+        name: "child4",
+        children: [
+          {
+            id: 41,
+            name: "child1",
+          },
+          {
+            id: 42,
+            name: "child2",
+          },
+          {
+            id: 43,
+            name: "child3",
+          },
+          {
+            id: 44,
+            name: "child4",
+          },
+        ]
+      },
     ],
   },
   {

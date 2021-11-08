@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { SafeAreaView, Text, View } from "react-native";
+import { SafeAreaView, View, ViewStyle } from "react-native";
 
-import { dataStructure, DataStructure } from "./treeData";
+import { DataStructure } from "../index";
 
 type ListProps<T extends DataStructure> = {
   level?: number;
-  selectedItemId: T["id"] | null | undefined;
+  selectedItemId: T["id"][] | null | undefined;
   buttonComponent: (data: DataStructure, level: number) => React.ReactNode;
+  containerStyle?: (level: number) => React.CSSProperties | ViewStyle
   treeData: T[];
 };
+
 
 export default function List<T extends DataStructure>(props: ListProps<T>) {
   const [itemMeasure, setItemMeasure] = useState<{
@@ -21,8 +23,8 @@ export default function List<T extends DataStructure>(props: ListProps<T>) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-        {props.treeData.map((item, index) => {
-          const isSelected = props.selectedItemId === item.id;
+        {props.treeData.map((item) => {
+          const isSelected = props.selectedItemId?.find(s => s === item.id );
 
           return (
             <React.Fragment key={`${level}-${item.id}`}>
@@ -56,15 +58,12 @@ export default function List<T extends DataStructure>(props: ListProps<T>) {
                   }}
                 >
                   <View style={{ backgroundColor: getRandomColor(level) }}>
-                    <Text style={{ fontSize: 25, color: "white" }}>
-                      Level: {level}-{item.name}={item.children?.length ?? 0}
-                      childrens
-                    </Text>
-
                     {item.children ? (
-                      <Text style={{ fontSize: 15, color: "white" }}>
-                        Render children
-                      </Text>
+                        <List
+                            selectedItemId={props.selectedItemId}
+                            buttonComponent={props.buttonComponent}
+                            treeData={item.children}
+                        />
                     ) : null}
                   </View>
                 </View>
