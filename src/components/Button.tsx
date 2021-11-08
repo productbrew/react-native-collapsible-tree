@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
+import { Text, TouchableHighlight, View } from "react-native";
 
 type ButtonProps = {
   onPress: () => void;
@@ -23,12 +23,3 @@ export default function Button(props: ButtonProps) {
     </TouchableHighlight>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
