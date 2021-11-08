@@ -1,7 +1,5 @@
-import React, {useState} from "react";
-import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
-import List from "./components/List";
-import Button from "./components/Button";
+import React, { useState } from "react";
+import { SafeAreaView, ScrollView, StyleSheet, View, ViewStyle } from "react-native";
 
 export type DataStructure = {
     id: number;
@@ -9,35 +7,91 @@ export type DataStructure = {
     children?: DataStructure[];
 };
 
-interface PillProps {
-    data: DataStructure[];
-}
+type PillProps<T extends DataStructure> = {
+    level?: number;
+    selectedItemId: T["id"][] | null | undefined;
+    buttonComponent: (data: DataStructure, level: number) => React.ReactNode;
+    containerStyle?: (level: number) => React.CSSProperties | ViewStyle
+    treeData: T[];
+};
 
-const Pill: React.FC<PillProps> = ({ data }) => {
-    const [selected, setSelected] = useState<number[]>([]);
+export default function Pill<T extends DataStructure>(props: PillProps<T>) {
+    const [itemMeasure, setItemMeasure] = useState<{
+        [key: number]: { height: number; y: number };
+    }>({});
+    const [height, setHeight] = useState(0);
+
+    const level = props.level ?? 0;
 
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
-                <List<{ id: number; name: string }>
-                    treeData={data}
-                    selectedItemId={selected}
-                    buttonComponent={(itemData) => {
-                        const isSelected = !!(selected.find(s => s === itemData.id));
+                <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                    {props.treeData.map((item) => {
+                        const isSelected = props.selectedItemId?.find(s => s === item.id );
+                        const hasChildren = item.children && item.children.length;
 
                         return (
-                            <Button
-                                onPress={() => {
-                                    setSelected(isSelected ? selected.filter(s => s !== itemData.id) : [...selected, itemData.id]);
-                                }}
-                                isSelected={isSelected}
-                                title={`${itemData?.name} + ${itemData.children?.length ?? 0}`}
-                            />
+                            <React.Fragment key={`${level}-${item.id}`}>
+                                <View
+                                    style={isSelected && hasChildren ? { marginBottom: height } : undefined}
+                                    onLayout={(event) => {
+                                        const { x, y, height, width } = event.nativeEvent.layout;
+
+                                        setItemMeasure((prev) => ({
+                                            ...prev,
+                                            [item.id]: { x, y, height, width },
+                                        }));
+                                    }}
+                                >
+                                    {props.buttonComponent(item, level)}
+                                </View>
+
+                                {isSelected && hasChildren ? (
+                                    <View
+                                        onLayout={(event) => {
+                                            setHeight(event.nativeEvent.layout.height);
+                                        }}
+                                        style={{
+                                            zIndex: level + 1,
+                                            width: "100%",
+                                            position: "absolute",
+                                            top:
+                                            // height is for button andd Y is the movement
+                                                (itemMeasure[item.id]?.height ?? 0) +
+                                                (itemMeasure[item.id]?.y ?? 0),
+                                        }}
+                                    >
+                                        <View style={{ backgroundColor: getRandomColor(level) }}>
+                                            {item.children ? (
+                                                <Pill
+                                                    level={props.level ?? level + 1}
+                                                    selectedItemId={props.selectedItemId}
+                                                    buttonComponent={props.buttonComponent}
+                                                    treeData={item.children}
+                                                />
+                                            ) : null}
+                                        </View>
+                                    </View>
+                                ) : null}
+                            </React.Fragment>
                         );
-                    }}
-                />
+                    })}
+                </View>
             </ScrollView>
         </SafeAreaView>
+    );
+}
+
+function getRandomColor(level: number) {
+    return (
+        "rgb(" +
+        Math.floor((level / 100) * 256) +
+        "," +
+        Math.floor((level / 10) * 256) +
+        "," +
+        Math.floor((level / 10) * 256) +
+        ")"
     );
 }
 
@@ -46,5 +100,3 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 });
-
-export default Pill
