@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView, ScrollView, StyleSheet, View, ViewStyle } from "react-native";
+import {SafeAreaView, ScrollView, StyleProp, StyleSheet, View, ViewStyle} from "react-native";
 
 export type DataStructure = {
     id: number;
@@ -11,7 +11,7 @@ type PillProps<T extends DataStructure> = {
     level?: number;
     selectedItemId: T["id"][] | null | undefined;
     buttonComponent: (data: DataStructure, level: number) => React.ReactNode;
-    containerStyle?: (level: number) => React.CSSProperties | ViewStyle
+    containerStyle?: (level: number) => StyleProp<ViewStyle>
     treeData: T[];
 };
 
@@ -34,7 +34,10 @@ export default function Pill<T extends DataStructure>(props: PillProps<T>) {
                         return (
                             <React.Fragment key={`${level}-${item.id}`}>
                                 <View
-                                    style={isSelected && hasChildren ? { marginBottom: height } : undefined}
+                                    style={[
+                                        isSelected && hasChildren ? { marginBottom: height } : undefined,
+                                        props.containerStyle ? props.containerStyle(level) : undefined
+                                    ]}
                                     onLayout={(event) => {
                                         const { x, y, height, width } = event.nativeEvent.layout;
 
@@ -62,7 +65,7 @@ export default function Pill<T extends DataStructure>(props: PillProps<T>) {
                                                 (itemMeasure[item.id]?.y ?? 0),
                                         }}
                                     >
-                                        <View style={{ backgroundColor: getRandomColor(level) }}>
+                                        <View style={props.containerStyle ? props.containerStyle(level) : undefined}>
                                             {item.children ? (
                                                 <Pill
                                                     level={props.level ?? level + 1}
@@ -80,18 +83,6 @@ export default function Pill<T extends DataStructure>(props: PillProps<T>) {
                 </View>
             </ScrollView>
         </SafeAreaView>
-    );
-}
-
-function getRandomColor(level: number) {
-    return (
-        "rgb(" +
-        Math.floor((level / 100) * 256) +
-        "," +
-        Math.floor((level / 10) * 256) +
-        "," +
-        Math.floor((level / 10) * 256) +
-        ")"
     );
 }
 
