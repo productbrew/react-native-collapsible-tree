@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "react-native-collapsible-tree": ["./src/index"]
+      "@productbrew/react-native-collapsible-tree": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

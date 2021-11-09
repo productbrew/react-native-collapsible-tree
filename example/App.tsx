@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {StatusBar} from 'expo-status-bar';
 import {StyleSheet, View} from 'react-native';
 
-import Pill, { DataStructure } from 'react-native-collapsible-tree';
+import Pill, { DataStructure } from '@productbrew/react-native-collapsible-tree';
 
 import { dataStructure } from './data';
 import Button from "./Button";
