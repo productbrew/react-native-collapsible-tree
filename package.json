@@ -1,10 +1,10 @@
 {
-  "name": "react-native-pill",
+  "name": "react-native-collapsible-tree",
   "version": "0.1.0",
   "author": "Luke Czyszczonik",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/productbrew/rn-pill"
+    "url": "git+https://github.com/productbrew/react-native-collapsible-tree"
   },
   "license": "MIT",
   "main": "lib/commonjs/index.js",

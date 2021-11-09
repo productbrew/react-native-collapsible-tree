@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "react-native-pill": ["./src/index"]
+      "react-native-collapsible-tree": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

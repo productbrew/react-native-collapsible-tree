@@ -1,4 +1,4 @@
-import { DataStructure } from 'react-native-pill';
+import { DataStructure } from 'react-native-collapsible-tree';
 
 export const dataStructure: DataStructure[] = [
   {
