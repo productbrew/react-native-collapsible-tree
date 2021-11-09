@@ -65,7 +65,7 @@ export default function Pill<T extends DataStructure>(props: PillProps<T>) {
                                                 (itemMeasure[item.id]?.y ?? 0),
                                         }}
                                     >
-                                        <View style={props.containerStyle ? props.containerStyle(level) : undefined}>
+                                        <View style={props.containerStyle ? props.containerStyle(level + 1) : undefined}>
                                             {item.children ? (
                                                 <Pill
                                                     level={props.level ?? level + 1}
