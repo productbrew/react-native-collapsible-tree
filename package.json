@@ -19,7 +19,7 @@
   "scripts": {
     "test": "echo shrug && exit 1",
     "prepare": "bob build",
-    "release": "release-it",
+    "release": "release-it ",
     "typescript": "tsc --noEmit"
   },
   "devDependencies": {
@@ -44,5 +44,9 @@
       "module",
       "typescript"
     ]
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }
