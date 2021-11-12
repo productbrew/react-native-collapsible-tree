@@ -9,13 +9,25 @@ type ButtonProps = {
 
 export default function Button(props: ButtonProps) {
   return (
-    <TouchableHighlight onPress={props.onPress}>
+    <TouchableHighlight
+      onPress={props.onPress}
+      underlayColor="white"
+    >
       <View
         style={{
-          backgroundColor: props.isSelected ? "slateblue" : "red",
+          backgroundColor: props.isSelected ? "orange" : "white",
           flexDirection: "column",
           margin: 5,
           padding: 15,
+          borderRadius: 50,
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
         }}
       >
         <Text>{props.title}</Text>

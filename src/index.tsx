@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {SafeAreaView, ScrollView, StyleProp, StyleSheet, View, ViewStyle} from "react-native";
+import { SafeAreaView, ScrollView, StyleProp, StyleSheet, View, ViewStyle, Text } from "react-native";
 
 export type DataStructure = {
     id: number;
@@ -23,19 +23,40 @@ export default function Pill<T extends DataStructure>(props: PillProps<T>) {
 
     const level = props.level ?? 0;
 
+    const getLastIndex = (arr: DataStructure[], selectedItems: T["id"][] | null | undefined): number => {
+        let lastIndex: number = 0;
+        let idx: number = 0;
+
+        if (selectedItems && selectedItems.length) {
+            for (let i = 0; i < arr.length; i++) {
+                const index = selectedItems.indexOf(arr[i].id)
+                if (index > -1) {
+                    if (index >= lastIndex) {
+                        lastIndex = index;
+                        idx = i;
+                    }
+                }
+            }
+        }
+
+        return idx;
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                    {props.treeData.map((item) => {
-                        const isSelected = props.selectedItemId?.find(s => s === item.id );
+                    {props.treeData.map((item, index, array) => {
+                        const lastSelected = getLastIndex(array, props.selectedItemId);
+                        const isSelectedId = props.selectedItemId?.find(s => s === item.id);
                         const hasChildren = item.children && item.children.length;
+                        const isSelected: boolean = !!(isSelectedId && hasChildren && lastSelected === index);
 
                         return (
                             <React.Fragment key={`${level}-${item.id}`}>
                                 <View
                                     style={[
-                                        isSelected && hasChildren ? { marginBottom: height } : undefined,
+                                        isSelected ? { marginBottom: height } : undefined,
                                         props.containerStyle ? props.containerStyle(level) : undefined
                                     ]}
                                     onLayout={(event) => {
@@ -50,7 +71,7 @@ export default function Pill<T extends DataStructure>(props: PillProps<T>) {
                                     {props.buttonComponent(item, level)}
                                 </View>
 
-                                {isSelected && hasChildren ? (
+                                {isSelected ? (
                                     <View
                                         onLayout={(event) => {
                                             setHeight(event.nativeEvent.layout.height);

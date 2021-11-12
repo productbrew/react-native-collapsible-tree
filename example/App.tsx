@@ -15,7 +15,7 @@ export default function App() {
             <Pill<{ id: number; name: string }>
                 treeData={dataStructure}
                 selectedItemId={selected}
-                buttonComponent={(itemData: DataStructure) => {
+                buttonComponent={(itemData: DataStructure, level: number) => {
                     const isSelected = !!(selected.find(s => s === itemData.id));
 
                     return (
