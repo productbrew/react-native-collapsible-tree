@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import {StatusBar} from 'expo-status-bar';
-import {StyleSheet, View} from 'react-native';
+import React, { useState } from "react";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, View } from 'react-native';
 
 import Pill, { DataStructure } from '@productbrew/react-native-collapsible-tree';
 
@@ -14,7 +14,7 @@ export default function App() {
         <View style={styles.container}>
             <Pill<{ id: number; name: string }>
                 treeData={dataStructure}
-                selectedItemId={selected}
+                selectedItems={selected}
                 buttonComponent={(itemData: DataStructure, level: number) => {
                     const isSelected = !!(selected.find(s => s === itemData.id));
 

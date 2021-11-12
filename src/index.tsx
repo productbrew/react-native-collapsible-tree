@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView, ScrollView, StyleProp, StyleSheet, View, ViewStyle, Text } from "react-native";
+import { SafeAreaView, ScrollView, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 
 export type DataStructure = {
     id: number;
@@ -8,11 +8,11 @@ export type DataStructure = {
 };
 
 type PillProps<T extends DataStructure> = {
-    level?: number;
-    selectedItemId: T["id"][] | null | undefined;
+    treeData: T[];
+    selectedItems: T["id"][] | null | undefined;
     buttonComponent: (data: DataStructure, level: number) => React.ReactNode;
     containerStyle?: (level: number) => StyleProp<ViewStyle>
-    treeData: T[];
+    level?: number;
 };
 
 export default function Pill<T extends DataStructure>(props: PillProps<T>) {
@@ -47,8 +47,8 @@ export default function Pill<T extends DataStructure>(props: PillProps<T>) {
             <ScrollView>
                 <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
                     {props.treeData.map((item, index, array) => {
-                        const lastSelected = getLastIndex(array, props.selectedItemId);
-                        const isSelectedId = props.selectedItemId?.find(s => s === item.id);
+                        const lastSelected = getLastIndex(array, props.selectedItems);
+                        const isSelectedId = props.selectedItems?.find(s => s === item.id);
                         const hasChildren = item.children && item.children.length;
                         const isSelected: boolean = !!(isSelectedId && hasChildren && lastSelected === index);
 
@@ -90,7 +90,7 @@ export default function Pill<T extends DataStructure>(props: PillProps<T>) {
                                             {item.children ? (
                                                 <Pill
                                                     level={props.level ?? level + 1}
-                                                    selectedItemId={props.selectedItemId}
+                                                    selectedItems={props.selectedItems}
                                                     buttonComponent={props.buttonComponent}
                                                     treeData={item.children}
                                                 />
