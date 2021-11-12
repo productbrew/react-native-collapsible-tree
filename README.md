@@ -145,6 +145,6 @@ const styles = StyleSheet.create({
 
 # Try it out
 
-You can also try out the [example app](https://snack.expo.io/@pzatorski/react-native-flip-example) with Expo.
+You can also try out the [example app](https://snack.expo.dev/@dkmiecik90/collapsible-tree-example) with Expo.
 
 The source code for the example app is under [/example](https://github.com/productbrew/react-native-collapsible-tree/tree/main/example) folder.
